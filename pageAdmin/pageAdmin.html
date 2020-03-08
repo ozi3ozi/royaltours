@@ -1,0 +1,991 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!--<Script type="text/javascript" src="Script/script.js"></script>-->
+    <link rel="stylesheet" type="text/css" href="css/css.css"/>
+      
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+ 
+	
+	
+  
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+	<script language="javascript" src="js/jquery-3.3.1.min.js"></script>
+	<script language="javascript" src="js/fonctionsMontrerCacher.js"></script>
+	<script language="javascript" src="MVC/RequetesModele.js"></script>
+	<script language="javascript" src="MVC/ControleurVue.js"></script>
+    <title>Royaltours Genie Logiciel</title>
+  </head>
+  <body onload="cacherTout(); rendreVisible('divConnexion'); remplirSelectDpt();
+			veriferSiConnecter();lister('circuit',' ');">
+			
+			
+   <!--Debut formulaire de connexion-->
+   <div id="divConnexion" class="container col-8">
+	
+	<h1 class="text-center mb-4">Interface de gestion de l'application <br>CircuitDeVoyages</h1>
+	<h3 class="text-center mt-4">Connexion:</h3>
+		<div id="alertConnex" class="alert alert-danger" role="alert"
+					style="display:none;"></div>
+	<form id="formConnexion" method="POST" name="formConnexion" class="text-center">
+	   <input type="text" name="numEmp" value="" size="30" placeholder="Votre numero d'employe"
+		   class="form-control mb-2 col-5 mx-auto"/>
+	   <input type="password" name="mdp" value="" size="30" placeholder="Mot de passe"
+		   class="form-control mb-2 col-5 mx-auto"/>
+	   <button type="button" class="btn btn-primary" onclick="verifInfoConnex('alertConnex');">
+				Se connecter</button>
+	   <button type="button" class="btn btn-primary"
+			onclick="cacherTout(); rendreVisible('divInscription'); ">
+			S'inscrire</button>		
+	</form>
+   </div>
+   <!--Fin formulaire de connexion-->
+   
+   <!--Debut formulaire d'inscription-->
+   <div id="divInscription" class="container col-8">
+		<img type="button" class="btn btn-circle btn-xl" src="icones/retour.jpg" alt=""
+			onclick="cacherTout(); rendreVisible('divConnexion');"/>
+		<div id="alertInscrp" class="alert alert-danger" role="alert"
+					style="display:none;"></div>
+	<h3 class="text-center mt-4">Inscription:</h3>
+	<h5 class="text-danger">Tous les champs sont obligatoires</h5>
+	<form id="formInscription" method="POST" name="formInscription" class="text-center">
+		  <select id="sexe" name="sexe" class="form-control mb-2 col-5">
+			<option>Homme</option>
+			<option>Femme</option>
+		  </select>
+		  <select id="selectDepartement" name="idDepartement" class="form-control mb-2 col-5">
+			<!--Rempli de la base de donnees fonction remplirSelectDpt()-->
+		  </select>
+	   <input type="text" name="nom" value="" size="30" placeholder="Nom"
+		   class="form-control mb-2 col-5 float-left mr-3" required />
+	   <input type="text" name="prenom" value="" size="30" placeholder="Prenom"
+		   class="form-control mb-2 col-5 float-left ml-3" required />
+	   <input type="date" name="ddn" value="" size="30" placeholder="Date de naissance aaaa-mm-jj"
+		   class="form-control mb-2 col-5" required />
+	   <input type="text" name="numEmp" value="" size="30" placeholder="Votre numero d'employe"
+		   class="form-control mb-2" required />
+	   <input type="password" name="mdp" value="" size="30" placeholder="Mot de passe"
+		   class="form-control mb-2 col-5 float-left mr-3" required />
+	   <input type="password" name="mdpConf" value="" size="30" placeholder="Confirmer le mot de passe"
+		   class="form-control mb-2 col-5 float-left ml-3" required />
+		   <p><br><br>Utilisez au moins huit caractères avec des lettres, des chiffres et des symboles.</p>
+
+	   
+	   <button type="button" class="btn btn-primary"
+			onclick="inscrireEmploye('alertInscrp');">Creer le compte</button>	
+	</form>
+   </div>
+   <!--Fin formulaire de'inscription-->
+   
+   <div class="container col-12">
+   <div class="row">
+   <!--Barre de navigation-->
+	<table id="navCote" class="table table-dark col-2">
+	 <tbody>
+	  <tr><th class="py-4 text-center text-white text-uppercase">
+	   <h3><a id="dashboardCell" class="text-white" type="button"
+			onclick="cacherTout(); rendreVisible('navCote');">
+			DASHBOARD</a><h3></th></tr>
+	  <tr class="admin"><th class="py-4 text-center">
+	   <h3><a class="text-white" type="button" 
+		onclick="montrerModalitesPmt();rendreVisible('navCote');">
+		Modalites de paiement</a></h3></th></tr>
+	  <tr><th class="py-4 text-center">
+	   <h3><a class="text-white text-center" type="button" 
+		onclick="montrerListeInscrits();lister('inscrit',' ');">Clients</a></h3></th></tr>
+	  <tr><th class="py-4 text-center">
+	   <h3><a class="text-white" type="button"
+			onclick="montrerAjoutCircuit();lister('circuit',' ');
+			setAjoutOurLister('lister');">Circuits</a></h3></th></tr>
+	  <tr class="admin"><th class="py-4 text-center">
+	   <h3><a class="text-white" type="button" 
+		onclick="montrerAjoutCircuit();lister('circuit',' '); 
+		setAjoutOurLister('ajout')"
+		>Ajouter un Circuit</a></h3></th></tr>
+	  <tr><th class="py-4 text-center">
+	   <h3><a class="text-white" type="button">Messages</a></h3></th></tr>
+	  <tr><th class="py-4 text-center">
+	   <h3><a class="text-white" type="button" onclick="deconnexion();">
+			Deconnexion</a></h3></th></tr>
+	  </tbody>
+	 </table>
+	<!--Fin Barre de navigation-->
+   
+   <!--Main-->
+    <div class="col-10">
+		
+		<!--Debut modalites de paiement-->
+		
+		<form id="paiement" method="POST" name="formmodalitesPmt" class="text-center">
+			<h3 class="float-left mr-3">Nombre de tranches permises pour payer
+			 un achat (1 par default)</h3>
+			<input id="tranchePmt" type="text" name="tranchePmt" value="" size="30" placeholder="Nombre de tranches"
+		   class="form-control mb-2 col-5 float-left mr-3" required />
+		   <button type="button" class="btn btn-primary float-left mr-3"
+			onclick="appliquerModalitesPmt();">Appliquer</button>
+		</form>
+		<!--Fin modalites de paiement-->
+		
+		<!--Debut liste des inscrits-->
+		<table id="listeInscrits" class="table table-striped">
+	  <thead>
+		<tr>
+		  <th scope="col">Nom</th>
+		  <th scope="col">Prenom</th>
+		  <th scope="col">Date de naissance</th>
+		  <th scope="col">Courriel</th>
+		  <th scope="col">Genre</th>
+		</tr>
+	  </thead>
+	  <tbody id="bodyListInscrits">
+		
+	  </tbody>
+	</table>	
+	<!--Fin liste des inscrits-->
+	
+   <!--Ajouter un circuit-->
+	<div id="ajoutCircuit">
+	<h2 class="ajoutCircuit" class="text-center"> Creation de circuit</h2>
+	<h2 class="listeCircuit" class="text-center"> Liste des circuits</h2>
+	 <!-- <div class="progress mt-2" style="height: 70px;">
+	  <div class="progress-bar text-dark h4 h-100" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0% complete</div>
+	  </div> -->
+	 
+	 <!--Boutton pour afficher le formulaire d'ajout d'un circuit-->
+	 <table class="col-10">
+	 <tbody>
+	  <tr>
+	   <td class="py-4 float-left text-center text-white text-uppercase">
+	   <img type="button" class="btn btn-circle btn-xl" src="icones/retour.jpg" 
+	   alt="" onclick="montrerDashboard();"/></td>
+	   <td class="ajoutCircuit py-4 pr-5 text-center text-white text-uppercase">
+	   <button type="button" id="btnShowFormAjoutCircuit" 
+		class="ajoutCircuit btn btn-primary btn-circle btn-xl text-center mt-4 ml-10"
+		data-toggle="modal" data-target="#modalAjoutCircuit">Ajouter Circuit</button>
+		</td></tr>
+	 </tbody>
+	</table>
+	 		
+	<!--Page modale pour le formulaire d'ajout d'un circuit-->
+		<div class="modal fade" id="modalAjoutCircuit" tabindex="-1" role="dialog" aria-labelledby="modalLabelFormCircuit" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<h5 class="modal-title" id="modalLabelFormCircuit">Formulaire d'ajout de circuit</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				  <span aria-hidden="true">&times;</span>
+				</button>
+			  </div>
+			  <form id="formAjoutCircuit" method="POST">
+			  <div class="modal-body">
+                 <input type="text" name="nom" value="" size="30" placeholder="Nom"
+                       class="form-control"/>
+                 <input type="datetime"  name="dateDebut" value="" size="30" placeholder="Date de debut yyyy-mm-jj"
+                       class="form-control"/>
+                 <input type="text" name="duree" value="" size="30" placeholder="duree en jours"
+                       class="form-control"/>
+                 <input type="text" name="prix" value="" size="30" placeholder="prix"
+                       class="form-control"/>
+				 <input type="text" name="quantite" value="" size="30" placeholder="Nombre de place disponibles a la vente"
+                       class="form-control"/>
+				 <!--Debut ajout image-->
+				 <a data-toggle="collapse" href="#multiCollapseImage" role="button" 
+					aria-expanded="false" aria-controls="multiCollapseImage">
+					<h5 class="text-dark">Ajouter une image
+					<img class="float-right" src="icones/defiler.jpg" alt=""/></h5></a>
+				 <div class="collapse multi-collapse" id="multiCollapseImage">
+				   <input id="lienImgCircuit" type="file" name="lienImg" value="" 
+						size="30" placeholder="URL de l'image" class="form-control"/>
+					<div id="msgImgCircuit"></div>
+				   <button type="button" class="btn btn-primary"
+						onclick="ajouterImgDansBD('lienImgCircuit');">Ajouter image</button>
+				 </div>
+				 <!--Fin ajout image-->  
+			  </div>
+			  <div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal"
+						onclick="viderListImg()">Quitter</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal"
+						onclick="ajoutCircuit();viderListImg();lister('circuit');
+							montrerAjoutCircuit()">Creer le circuit</button>
+			  </div>
+			  </form>
+			</div>
+		  </div>
+		</div>
+	<!--Fin modale ajout d'un circuit-->
+	
+	 		
+	<!--Page modale pour l'ajout d'une promotion-->
+		<div class="modal fade" id="modalAjoutPromo" tabindex="-1" role="dialog" aria-labelledby="modalLabelFormPromo" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<h5 class="modal-title" id="modalLabelFormPromo">Ajout d'une promotion</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				  <span aria-hidden="true">&times;</span>
+				</button>
+			  </div>
+			  <form id="formAjoutPromo" name="formAjoutPromo" method="POST">
+			  <div class="modal-body">
+                 <input type="text" name="promoTxt" name="promo" value="" size="30" 
+						placeholder="ex: 15%" class="form-control"/> 
+			  </div>
+			  <div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal"
+						onclick="viderListImg()">Quitter</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal"
+						onclick="ajoutPromo();lister('circuit');
+						montrerAjoutCircuit();">Appliquer la promotion</button>
+			  </div>
+			  </form>
+			</div>
+		  </div>
+		</div>
+	<!--Fin modale ajout d'une promotion-->
+	
+	<!--Liste circuit-->
+	<div id="listeCircuits" class="row mt-3">
+		  
+
+		</div>
+		
+	<!--Modifier ciruit-->		
+	<!--Page modale pour le formulaire de modification d'un circuit-->
+		<div class="modal fade" id="modalModifierCircuit" tabindex="-1" role="dialog" aria-labelledby="modalLabelFormModifCircuit" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<h5 class="modal-title" id="modalLabelFormModifCircuit">Formulaire de modification de circuit</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				  <span aria-hidden="true">&times;</span>
+				</button>
+			  </div>
+			  <form id="formModifierCircuit" method="POST">
+			  <div class="modal-body">
+			     <input type="hidden" id="modifIdCircuit" name="id" value="" size="30" placeholder="Nom"
+                       class="form-control"/>
+				 <h5>Nom du circuit</h5>
+                 <input type="text" id="modifNomCircuit" name="nom" value="" size="30" placeholder="Nom"
+                       class="form-control"/>
+				 <h5>Date de debut</h5>
+                 <input type="datetime" id="modifDebutCircuit" name="dateDebut" value="" size="30" placeholder="Date de debut yyyy-mm-jj"
+                       class="form-control"/>
+				 <h5>Duree en jours</h5>
+                 <input type="text" id="modifDureeCircuit" name="duree" value="" size="30" placeholder="duree en jours"
+                       class="form-control"/>
+				 <h5>Prix</h5>
+                 <input type="text" id="modifPrixCircuit" name="prix" value="" size="30" placeholder="prix"
+                       class="form-control"/>
+				 <h5>Quantite disponible</h5>	   
+				 <input type="text" id="modifQteCircuit" name="quantite" value="" size="30" placeholder="Nombre de place disponibles a la vente"
+                       class="form-control"/>
+				<!--ajout d'autres images-->
+				 <a data-toggle="collapse" href="#multiCollapseImageModif" role="button" 
+					aria-expanded="false" aria-controls="multiCollapseImageModif">
+					<h5 class="text-dark">Ajouter une image
+					<img class="float-right" src="icones/defiler.jpg" alt=""/></h5></a>
+				 <div class="collapse multi-collapse" id="multiCollapseImageModif">
+				   <input id="lienImgCircuitModif" type="file" name="lienImg" value="" 
+						size="30" placeholder="URL de l'image" class="form-control"/>
+					<div id="msgImgCircuit"></div>
+				   <button type="button" class="btn btn-primary"
+						onclick="ajouterImgDansBD('lienImgCircuitModif');">Ajouter image</button>
+				 </div>
+				 <!--Fin ajout d'autres images-->
+				   
+			  </div>
+			  <div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal"
+						onclick="viderListImg()">Quitter</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal"
+						onclick="modifCircuit();lister('circuit');"
+						>Sauvegarder les modifications</button>
+			  </div>
+			  </form>
+			</div>
+		  </div>
+		</div>
+	<!--Fin modale Modifier circuit-->
+	 
+	</div>
+	<!--Fin Ajouter un circuit-->
+	<!----------------------------------------------------------->
+	<!--Ajouter une etape-->
+	<div id="ajoutEtape">
+	<h2 id="titreEtape" class="text-center"> Creation du circuit </h2>
+	 <div class="ajoutCircuit progress mt-2" style="height: 70px;">
+	  <div class="progress-bar bg-success text-dark h4 h-100" role="progressbar" style="width: 34%;" aria-valuenow="34" aria-valuemin="0" aria-valuemax="100">34% complete</div>
+	  </div>
+	 
+	 <!--Boutton pour afficher le formulaire d'ajout d'une etape-->
+	 <table class="col-10">
+	 <tbody>
+	  <tr>
+	   <td class="py-4 float-left text-center text-white text-uppercase">
+	   <img type="button" class="btn btn-circle btn-xl" src="icones/retour.jpg" 
+	   alt="" onclick="montrerAjoutCircuit();lister('circuit',' ');"/></td>
+	   <td class="ajoutCircuit py-4 pr-5 text-center text-white text-uppercase">
+	   <button type="button" id="btnShowFormAjoutEtape" 
+		class="btn btn-primary btn-circle btn-xl text-center mt-4 ml-10"
+		data-toggle="modal" data-target="#modalAjoutEtape">Ajouter etape</button></td>
+		</tr>
+	 </tbody>
+	</table>
+		
+	<!--Page modale pour le formulaire d'ajout d'une etape-->
+		<div class="modal fade" id="modalAjoutEtape" tabindex="-1" role="dialog" aria-labelledby="modalLabelEtape" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<h5 class="modal-title" id="modalLabelEtape" >Formulaire d'ajout d'une etape</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				  <span aria-hidden="true">&times;</span>
+				</button>
+			  </div>
+			  <form id="formAjoutEtape" method="POST" name="formAjoutEtape">
+			  <div class="modal-body">
+                 <input type="text" name="nom" value="" size="30" placeholder="Nom de l'etape"
+                       class="form-control"/>
+                 <input type="datetime"  name="dateDebut" value="" size="30" placeholder="Date de debut yyyy-mm-jj"
+                       class="form-control"/>
+                 <textarea  type="text-area" name="description" value="" size="30" placeholder="Description"
+                       class="form-control"></textarea>
+				 <!--Debut ajout image-->
+				 <a data-toggle="collapse" href="#multiCollapseImage" role="button" 
+					aria-expanded="false" aria-controls="multiCollapseImage">
+					<h5 class="text-dark">Ajouter une image
+					<img class="float-right" src="icones/defiler.jpg" alt=""/></h5></a>
+				 <div class="collapse multi-collapse" id="multiCollapseImage">
+				  <input type="file" id="lienImgEtape" name="lienImgEtape" value="" 
+				   size="30" placeholder="URL de l'image" class="form-control"/>
+				   <button type="button" class="btn btn-primary"
+				   onclick="ajouterImgDansBD('lienImgEtape');">
+				   Ajouter image</button>
+					<div id="msgImgEtape"></div>				   
+				 </div>
+				 <!--Fin ajout image-->   
+			  </div>
+			  <div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal"
+						onclick="viderListImg()">Quitter</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal"
+						onclick="ajoutEtape();viderListImg();
+							lister('etape',getConditionLister('idCircuit'));
+							montrerAjoutEtape();">
+						Creer etape</button>	
+			  </div>
+			  </form>
+			</div>
+		  </div>
+		</div>
+	<!--Fin modale ajout d'une etape-->
+	
+	<!--Details Images circuit-->
+	<div class="listeCircuit text-center">
+	<a class="" data-toggle="collapse" href="#multiCollapseImgsCircuit" role="button" 
+			aria-expanded="false" aria-controls="multiCollapseImgsCircuit">
+			<h3 class="text-dark">Details images
+			<img src="icones/defiler.jpg" alt=""/></h3></a>
+		
+		 <div class="collapse multi-collapse" id="multiCollapseImgsCircuit">
+				<!--Liste Images circuit-->
+				<div id="listeImgsCircuit" class="row mt-3">
+				
+			 
+			</div>
+			
+		 </div>
+	</div>
+	
+	<!--Liste Etapes-->
+	<h3 class="text-center">Liste des etapes:</h3>
+	<div id="listeEtapes" class="row mt-3">
+	 
+	</div>
+	
+	<!--Debut modale Modifier etape-->	
+	<!--Page modale pour le formulaire de modification d'une etape-->
+		<div class="modal fade" id="modalModifEtape" tabindex="-1" role="dialog" aria-labelledby="modalLabelModifEtape" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<h5 class="modal-title" id="modalLabelModifEtape" >Formulaire de modification d'une etape</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				  <span aria-hidden="true">&times;</span>
+				</button>
+			  </div>
+			  <form id="formModifEtape" method="POST" name="formModifEtape">
+			  <div class="modal-body">
+				 <input type="hidden" id="idModifEtape" name="id" value="" size="30" placeholder="Nom de l'etape"
+                       class="form-control"/>
+				 <h5>Nom de l'etape</h5>
+                 <input type="text" id="nomModifEtape" name="nom" value="" size="30" placeholder="Nom de l'etape"
+                       class="form-control"/>
+				 <h5>Date de debut</h5>
+                 <input type="datetime" id="debutModifEtape" name="dateDebut" value="" size="30" placeholder="Date de debut yyyy-mm-jj"
+                       class="form-control"/>
+				 <h5>Description</h5>
+                 <textarea  type="text-area" id="descModifEtape" name="description" value="" size="30" placeholder="Description"
+                       class="form-control"></textarea> 
+				 <!--Debut ajout image-->
+				 <a data-toggle="collapse" href="#multiCollapseImageModif" role="button" 
+					aria-expanded="false" aria-controls="multiCollapseImageModif">
+					<h5 class="text-dark">Ajouter une image
+					<img class="float-right" src="icones/defiler.jpg" alt=""/></h5></a>
+				 <div class="collapse multi-collapse" id="multiCollapseImageModif">
+				  <input type="file" id="lienImgEtapeModif" name="lienImgEtape" value="" 
+				   size="30" placeholder="URL de l'image" class="form-control"/>
+				   <button type="button" class="btn btn-primary"
+				   onclick="ajouterImgDansBD('lienImgEtapeModif');">
+				   Ajouter image</button>
+					<div id="msgImgEtape"></div>				   
+				 </div>
+				 <!--Fin ajout image-->  
+			  </div>
+			  <div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal"
+						>Quitter</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal"
+						onclick="modifEtape();lister('etape',getConditionLister('idCircuit'));">
+						Sauvegarder les modifications</button>	
+			  </div>
+			  </form>
+			</div>
+		  </div>
+		</div>
+	<!--Fin modale modifier etape-->
+	 
+	</div>
+	
+	
+	<!--Fin Ajouter une etape-->
+	<!----------------------------------------------------------->
+	<!--Ajouter un jour-->
+	<div id="ajoutJour">
+	<h2 id="titreJour" class="text-center"> Creation du circuit 'nomCircuit'</h2>
+	 <div class="ajoutCircuit progress mt-2" style="height: 70px;">
+	  <div class="progress-bar bg-success text-dark h4 h-100" role="progressbar" style="width: 67%;" aria-valuenow="67" aria-valuemin="0" aria-valuemax="100">67% complete</div>
+	  </div>
+	 
+	 <!--Boutton pour afficher le formulaire d'ajout d'un jour-->
+	 <table class="col-10">
+	 <tbody>
+	  <tr>
+	   <td class="py-4 float-left text-center text-white text-uppercase">
+	   <img type="button" class="btn btn-circle btn-xl" src="icones/retour.jpg" alt=""
+	   onclick="montrerAjoutEtape();lister('etape',getConditionLister('idCircuit'));"/></td>
+	   <td class="ajoutCircuit py-4 pr-5 text-center text-white text-uppercase">
+	   <button type="button" id="btnShowFormAjoutEtape" 
+		class="btn btn-primary btn-circle btn-xl text-center mt-4 ml-10"
+		data-toggle="modal" data-target="#modalAjoutJour">Ajouter Jour</button></td>
+		</tr>
+	 </tbody>
+	</table>
+		
+	<!--Page modale pour le formulaire d'ajout d'un jour-->
+		<div class="modal fade" id="modalAjoutJour" tabindex="-1" role="dialog" 
+				aria-labelledby="modalLabelJour" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<h5 class="modal-title" id="modalLabelJour" >Formulaire d'ajout d'un jour</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				  <span aria-hidden="true">&times;</span>
+				</button>
+			  </div>
+			  <form id="formAjoutJour" method="POST" name="formAjoutJour">
+			  <div class="modal-body">
+                 <input type="text" name="nom" value="" size="30" placeholder="Nom du jour"
+                       class="form-control"/>
+				 <input type="text" name="date" value="" size="30" placeholder="Date du jour"
+                       class="form-control"/>
+                 <textarea  type="text-area" name="description" value="" size="30" placeholder="Description"
+                       class="form-control"></textarea>
+				 
+				 <!--Debut ajout hebergement-->
+				 <a data-toggle="collapse" href="#multiCollapseHeberg" role="button" 
+					aria-expanded="false" aria-controls="multiCollapseHeberg">
+					<h5 class="text-dark">Ajouter un hebergement
+					<img class="float-right" src="icones/defiler.jpg" alt=""/></h5></a>
+				 <div class="collapse multi-collapse" id="multiCollapseHeberg">
+				  <select class="form-control" id="typeHebergement">
+						<option>Hotel</option>
+						<option>Villa</option>
+						<option>Chalet</option>
+						<option>Hebergement traditionnel du pays</option>
+					  </select>
+				   <input type="text" id="nomHeberge" name="nomHeberge" size="30" placeholder="Nom de l'hebergement"
+                       class="form-control"/>
+				   <input type="text" id="adresseHeberge" name="adresseHeberge" size="30" placeholder="adresse de l'hebergement"
+                       class="form-control"/>
+				   <input type="text" id="sitewebHeberge" name="sitewebHeberge" size="30" placeholder="Siteweb de l'hebergement"
+                       class="form-control"/>
+				   <textarea  type="text-area" id="descriptionHeberge" name="descriptionHeberge" size="30" placeholder="Description"
+                       class="form-control"></textarea>
+				   <button type="button" class="btn btn-primary"
+						onclick="ajouterHebergeDansBD('');">Ajouter hebergement</button>	
+				 </div>
+				 <!--Fin ajout hebergement-->
+				 
+				 <!--Debut ajout restaurant-->
+				 <a data-toggle="collapse" href="#multiCollapseResto" role="button" 
+					aria-expanded="false" aria-controls="multiCollapseResto">
+					<h5 class="text-dark">Ajouter un restaurant
+					<img class="float-right" src="icones/defiler.jpg" alt=""/></h5></a>
+				 <div class="collapse multi-collapse" id="multiCollapseResto">
+				  
+					  <select class="form-control" id="typeRepas" placeholder="Type de repas">
+						<option>Petit dejeuner</option>
+						<option>Diner</option>
+						<option>Souper</option>
+						</select>
+				   <input type="text" id="nomResto" name="nomResto" size="30" placeholder="Nom du restaurant"
+                       class="form-control"/>
+				   <input type="text" id="adresseResto" name="adresseResto" size="30" placeholder="adresse du restaurant"
+                       class="form-control"/>
+				   <input type="text" id="sitewebResto" name="sitewebResto" size="30" placeholder="Siteweb du restaurant"
+                       class="form-control"/>
+				   <button type="button" class="btn btn-primary"
+						onclick="ajouterRestoDansBD('');">Ajouter restaurant</button>	
+				 </div>
+				 <!--Fin ajout restaurant-->
+				 
+				 <!--Debut ajout activite-->
+				 <a data-toggle="collapse" href="#multiCollapseActivite" role="button" 
+					aria-expanded="false" aria-controls="multiCollapseActivite">
+					<h5 class="text-dark">Ajouter une activite
+					<img class="float-right" src="icones/defiler.jpg" alt=""/></h5></a>
+				 <div class="collapse multi-collapse" id="multiCollapseActivite">
+				  <input type="text" id="nomActivite" name="nomActivite" size="30" placeholder="Nom de l'activite"
+                       class="form-control"/>
+				   <input type="text" id="adresseActivite" name="adresseActivite" size="30" placeholder="adresse de l'activite"
+                       class="form-control"/>
+				   <input type="text" id="heureDebutActivite" name="heureDebutActivite" size="30" placeholder="Heure de debut de l'activite"
+                       class="form-control"/>
+				   <input type="text" id="heureFinActivite" name="heureFinActivite" size="30" placeholder="Heure de fin de l'activite"
+                       class="form-control"/>
+				   <input type="text" id="sitewebActivite" name="sitewebActivite" size="30" placeholder="Siteweb de l'activite"
+                       class="form-control"/>
+				   <textarea  type="text-area" id="descriptionActivite" name="descriptionActivite" size="30" placeholder="Description"
+                       class="form-control"></textarea>
+				   <button type="button" class="btn btn-primary"
+						onclick="ajouterActiviteDansBD('');">Ajouter activite</button>	
+				 </div>
+				 <!--Fin ajout activite-->
+				 
+				 <!--Debut ajout image-->
+				 <a data-toggle="collapse" href="#multiCollapseImage" role="button" 
+					aria-expanded="false" aria-controls="multiCollapseImage">
+					<h5 class="text-dark">Ajouter une image
+					<img class="float-right" src="icones/defiler.jpg" alt=""/></h5></a>
+				 <div class="collapse multi-collapse" id="multiCollapseImage">
+				  <input type="file" id="lienImgJour" name="lienImgJour" value="" 
+				   size="30" placeholder="URL de l'image" class="form-control"/>
+				   <button type="button" class="btn btn-primary"
+				   onclick="ajouterImgDansBD('lienImgJour');">
+				   Ajouter image</button>
+				 </div>
+				 <!--Fin ajout image  lister('Jour');-->
+				    
+			  </div>
+			  <div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal"
+						onclick="viderListHeberge();viderListResto();
+						viderListActivite();">Quitter</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal"
+						onclick="ajoutJour();viderListImg();viderListHeberge();
+						viderListResto();viderListActivite();
+						lister('jour',getConditionLister('idEtape'));">
+						Creer jour</button>
+			  </div>
+			  </form>
+			</div>
+		  </div>
+		</div>
+	<!--Fin modale ajout d'un jour-->
+	
+	<!--Details Images etape-->
+	<div class="listeCircuit text-center">
+	<a class="" data-toggle="collapse" href="#multiCollapseImgsEtape" role="button" 
+			aria-expanded="false" aria-controls="multiCollapseImgsEtape">
+			<h3 class="text-dark">Details images
+			<img src="icones/defiler.jpg" alt=""/></h3></a>
+		
+		 <div class="collapse multi-collapse" id="multiCollapseImgsEtape">
+				<!--Liste Images circuit-->
+				<div id="listeImgsEtape" class="row mt-3">
+				
+			 
+			</div>
+			
+		 </div>
+	</div>
+	
+	<!--Liste Jours-->
+	<h3 class="text-center">Liste des jours:</h3>
+	<div id="listeJours" class="row mt-3">
+	  
+	 
+	</div>
+	
+	<!--Debut modal modification jour-->
+	<!--Page modale pour le formulaire d'ajout d'un jour-->
+		<div class="modal fade" id="modalModifJour" tabindex="-1" role="dialog" 
+				aria-labelledby="modalLabelModifJour" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<h5 class="modal-title" id="modalLabelModifJour" >Formulaire de modification d'un jour</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				  <span aria-hidden="true">&times;</span>
+				</button>
+			  </div>
+			  <form id="formModifJour" method="POST" name="formModifJour">
+			  <div class="modal-body">
+                 <input type="hidden" id="idModifJour" name="id" value="" size="30" placeholder="Nom du jour"
+                       class="form-control"/>
+				 <h5>Nom du jour</h5>
+                 <input type="text" id="nomModifJour" name="nom" value="" size="30" placeholder="Nom du jour"
+                       class="form-control"/>
+				 <h5>Date</h5>
+				 <input type="text" id="dateModifJour" name="date" value="" size="30" placeholder="Date du jour"
+                       class="form-control"/>
+				 <h5>Description</h5>
+                 <textarea  type="text-area" id="descModifJour" name="description" value="" size="30" placeholder="Description"
+                       class="form-control"></textarea>
+				
+				<!--Debut modif hebergement-->
+				 <a data-toggle="collapse" href="#multiCollapseHebergModif" role="button" 
+					aria-expanded="false" aria-controls="multiCollapseHebergModif">
+					<h5 class="text-dark">Ajouter un hebergement
+					<img class="float-right" src="icones/defiler.jpg" alt=""/></h5></a>
+				 <div class="collapse multi-collapse" id="multiCollapseHebergModif">
+				  <select class="form-control" id="typeHebergementModif">
+						<option>Hotel</option>
+						<option>Villa</option>
+						<option>Chalet</option>
+						<option>Hebergement traditionnel du pays</option>
+					  </select>
+				   <input type="text" id="nomHebergeModif" name="nomHeberge" size="30" placeholder="Nom de l'hebergement"
+                       class="form-control"/>
+				   <input type="text" id="adresseHebergeModif" name="adresseHeberge" size="30" placeholder="adresse de l'hebergement"
+                       class="form-control"/>
+				   <input type="text" id="sitewebHebergeModif" name="sitewebHeberge" size="30" placeholder="Siteweb de l'hebergement"
+                       class="form-control"/>
+				   <textarea  type="text-area" id="descriptionHebergeModif" name="descriptionHeberge" size="30" placeholder="Description"
+                       class="form-control"></textarea>
+				   <button type="button" class="btn btn-primary"
+						onclick="ajouterHebergeDansBD('Modif');">Ajouter hebergement</button>	
+				 </div>
+				 <!--Fin modif hebergement-->
+				 
+				 <!--Debut modif restaurant-->
+				 <a data-toggle="collapse" href="#multiCollapseRestoModif" role="button" 
+					aria-expanded="false" aria-controls="multiCollapseRestoModif">
+					<h5 class="text-dark">Ajouter un restaurant
+					<img class="float-right" src="icones/defiler.jpg" alt=""/></h5></a>
+				 <div class="collapse multi-collapse" id="multiCollapseRestoModif">
+				  
+					  <select class="form-control" id="typeRepasModif" placeholder="Type de repas">
+						<option>Petit dejeuner</option>
+						<option>Diner</option>
+						<option>Souper</option>
+						</select>
+				   <input type="text" id="nomRestoModif" name="nomResto" size="30" placeholder="Nom du restaurant"
+                       class="form-control"/>
+				   <input type="text" id="adresseRestoModif" name="adresseResto" size="30" placeholder="adresse du restaurant"
+                       class="form-control"/>
+				   <input type="text" id="sitewebRestoModif" name="sitewebResto" size="30" placeholder="Siteweb du restaurant"
+                       class="form-control"/>
+				   <button type="button" class="btn btn-primary"
+						onclick="ajouterRestoDansBD('Modif');">Ajouter restaurant</button>	
+				 </div>
+				 <!--Fin modif restaurant-->
+				 
+				 <!--Debut modif activite-->
+				 <a data-toggle="collapse" href="#multiCollapseActiviteModif" role="button" 
+					aria-expanded="false" aria-controls="multiCollapseActiviteModif">
+					<h5 class="text-dark">Ajouter une activite
+					<img class="float-right" src="icones/defiler.jpg" alt=""/></h5></a>
+				 <div class="collapse multi-collapse" id="multiCollapseActiviteModif">
+				  <input type="text" id="nomActiviteModif" name="nomActivite" size="30" placeholder="Nom de l'activite"
+                       class="form-control"/>
+				   <input type="text" id="adresseActiviteModif" name="adresseActivite" size="30" placeholder="adresse de l'activite"
+                       class="form-control"/>
+				   <input type="text" id="heureDebutActiviteModif" name="heureDebutActivite" size="30" placeholder="Heure de debut de l'activite"
+                       class="form-control"/>
+				   <input type="text" id="heureFinActiviteModif" name="heureFinActivite" size="30" placeholder="Heure de fin de l'activite"
+                       class="form-control"/>
+				   <input type="text" id="sitewebActiviteModif" name="sitewebActivite" size="30" placeholder="Siteweb de l'activite"
+                       class="form-control"/>
+				   <textarea  type="text-area" id="descriptionActiviteModif" name="descriptionActivite" size="30" placeholder="Description"
+                       class="form-control"></textarea>
+				   <button type="button" class="btn btn-primary"
+						onclick="ajouterActiviteDansBD('Modif');">Ajouter activite</button>	
+				 </div>
+				 <!--Fin modif activite-->
+				 
+				 <!--Debut modif image-->
+				 <a data-toggle="collapse" href="#multiCollapseImageModif" role="button" 
+					aria-expanded="false" aria-controls="multiCollapseImageModif">
+					<h5 class="text-dark">Ajouter une image
+					<img class="float-right" src="icones/defiler.jpg" alt=""/></h5></a>
+				 <div class="collapse multi-collapse" id="multiCollapseImageModif">
+				  <input type="file" id="lienImgJourModif" name="lienImgJour" value="" 
+				   size="30" placeholder="URL de l'image" class="form-control"/>
+				   <button type="button" class="btn btn-primary"
+				   onclick="ajouterImgDansBD('lienImgJourModif');">
+				   Ajouter image</button>
+				 </div>
+				 <!--Fin modif image  lister('Jour');-->
+				    
+			  </div>
+			  <div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal"
+						>Quitter</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal"
+						onclick="modifJour();lister('jour',getConditionLister('idEtape'));">
+						Sauvegarder les modifcations</button>
+			  </div>
+			  </form>
+			</div>
+		  </div>
+		</div>
+	<!--Fin modale modification d'un jour-->
+	 
+	</div>
+	<!--Fin Ajouter un jour-->
+	<!----------------------------------------------------------->
+	<!--Debut details jour-->
+	<div id="detailsJour">
+	
+		<!--Boutton pour afficher le formulaire d'ajout d'un jour-->
+		 <table class="col-10">
+		 <tbody>
+		  <tr>
+		   <td class="py-4 float-left text-center text-white text-uppercase">
+		   <img type="button" class="btn btn-circle btn-xl" src="icones/retour.jpg" alt=""
+		   onclick="montrerAjoutJour();lister('jour',getConditionLister('idEtape'));"/>
+		   </td>
+		   </tr>
+		 </tbody>
+		</table>
+	<h2 id="titredetailsJour"> </h2>
+		
+		 <a class="float-left mx-2" data-toggle="collapse" href="#multiCollapseDetailsHeberg" role="button" 
+			aria-expanded="false" aria-controls="multiCollapseDetailsHeberg">
+			<h5 class="text-dark">Details hebergements
+			<img src="icones/defiler.jpg" alt=""/></h5></a>
+		 <a class="float-left mx-2" data-toggle="collapse" href="#multiCollapseDetailsResto" role="button" 
+			aria-expanded="false" aria-controls="multiCollapseDetailsResto">
+			<h5 class="text-dark">Details restaurants
+			<img src="icones/defiler.jpg" alt=""/></h5></a>
+		 <a class="float-left mx-2" data-toggle="collapse" href="#multiCollapseDetailsActivite" role="button" 
+			aria-expanded="false" aria-controls="multiCollapseDetailsActivite">
+			<h5 class="text-dark">Details activites
+			<img src="icones/defiler.jpg" alt=""/></h5></a>
+		 <a class="" data-toggle="collapse" href="#multiCollapseDetailsImg" role="button" 
+			aria-expanded="false" aria-controls="multiCollapseDetailsImg">
+			<h5 class="text-dark">Details images
+			<img src="icones/defiler.jpg" alt=""/></h5></a>
+		
+		<!--Details hebergement-->
+		 <div class="collapse multi-collapse" id="multiCollapseDetailsHeberg">
+				<!--Liste Hebergements-->
+				<div id="listeHebergements" class="row mt-3">
+			  
+			 
+			</div>
+			
+		 </div>
+		 
+		 <!--Details Restaurants-->
+		 <div class="collapse multi-collapse" id="multiCollapseDetailsResto">
+				<!--Liste Restaurants-->
+				<div id="listeRestos" class="row mt-3">
+			  
+			 
+			</div>
+			
+		 </div>
+		 
+		 <!--Details Activites-->
+		 <div class="collapse multi-collapse" id="multiCollapseDetailsActivite">
+				<!--Liste Activites-->
+				<div id="listeActivites" class="row mt-3">
+			  
+			 
+			</div>
+			
+		 </div>
+		 
+		 <!--Details Images-->
+		 <div class="collapse multi-collapse" id="multiCollapseDetailsImg">
+				<!--Liste Images-->
+				<div id="listeImages" class="row mt-3">
+			  
+			 
+			</div>
+			
+		 </div>
+		 
+		 <!--data-toggle="modal" data-target="#modalModifHeberge"-->
+	<!--Debut modal modification hebergement-->
+	<!--Page modale pour le formulaire de modification d'un hebergement-->
+		<div class="modal fade" id="modalModifHeberge" tabindex="-1" role="dialog" 
+				aria-labelledby="modalLabelModifHeberge" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<h5 class="modal-title" id="modalLabelModifHeberge" >Formulaire d'ajout d'un jour</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				  <span aria-hidden="true">&times;</span>
+				</button>
+			  </div>
+			  <form id="formModifHeberge" method="POST" name="formModifHeberge">
+			  <div class="modal-body">
+                 <input type="hidden" id="idModifHeberge" name="id" value="" size="30" placeholder="Nom du jour"
+                       class="form-control"/>			 
+				  <select class="form-control" id="typeModifHebergement" name="type">
+						<option>Hotel</option>
+						<option>Villa</option>
+						<option>Chalet</option>
+						<option>Hebergement traditionnel du pays</option>
+					  </select>
+				   <h5>Nom de l'hebergement</h5>
+				   <input type="text" id="nomModifHeberge" name="nom" size="30" placeholder="Nom de l'hebergement"
+					   class="form-control"/>
+				   <h5>Adresse</h5>
+				   <input type="text" id="adresseModifHeberge" name="adresse" size="30" placeholder="adresse de l'hebergement"
+					   class="form-control"/>
+				   <h5>Site web</h5>
+				   <input type="text" id="sitewebModifHeberge" name="siteweb" size="30" placeholder="Siteweb de l'hebergement"
+					   class="form-control"/>
+				   <h5>Description</h5>
+				   <textarea  type="text-area" id="descriptionModifHeberge" name="description" size="30" placeholder="Description"
+					   class="form-control"></textarea>
+			  </div>
+			  <div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal"
+						>Quitter</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal"
+						onclick="modifHeberge();listerDetailsJour('hebergement',getConditionLister('idJour'));">
+						Sauvegarder les modifcations</button>
+			  </div>
+			  </form>
+			</div>
+		  </div>
+		</div>
+	<!--Fin modale modif hebergement-->
+	
+	<!--data-toggle="modal" data-target="#modalModifResto"-->
+	<!--Debut modal modification restaurant-->
+	<!--Page modale pour le formulaire de modification d'un restaurant-->
+		<div class="modal fade" id="modalModifResto" tabindex="-1" role="dialog" 
+				aria-labelledby="modalLabelModifResto" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<h5 class="modal-title" id="modalLabelModifResto" >Formulaire d'ajout d'un jour</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				  <span aria-hidden="true">&times;</span>
+				</button>
+			  </div>
+			  <form id="formModifResto" method="POST" name="formModifResto">
+			  <div class="modal-body">
+                 <input type="hidden" id="idModifResto" name="id" value="" size="30" placeholder="Nom du jour"
+                       class="form-control"/>			 
+				  <select class="form-control" id="typeModifRepas" name="type" placeholder="Type de repas">
+						<option>Petit dejeuner</option>
+						<option>Diner</option>
+						<option>Souper</option>
+						</select>
+				 <h5>Nom du restaurant</h5>
+				   <input type="text" id="nomModifResto" name="nom" size="30" placeholder="Nom du restaurant"
+                       class="form-control"/>
+				 <h5>Adresse</h5>
+				   <input type="text" id="adresseModifResto" name="adresse" size="30" placeholder="adresse du restaurant"
+                       class="form-control"/>
+				 <h5>Site web</h5>
+				   <input type="text" id="sitewebModifResto" name="siteweb" size="30" placeholder="Siteweb du restaurant"
+                       class="form-control"/>
+			  </div>
+			  <div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal"
+						>Quitter</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal"
+						onclick="modifResto();listerDetailsJour('restaurant',getConditionLister('idJour'));">
+						Sauvegarder les modifcations</button>
+			  </div>
+			  </form>
+			</div>
+		  </div>
+		</div>
+	<!--Fin modale modif restaurant-->
+	
+	<!--data-toggle="modal" data-target="#modalModifActivite"-->
+	<!--Debut modal modification activite-->
+	<!--Page modale pour le formulaire de modification d'une activite-->
+		<div class="modal fade" id="modalModifActivite" tabindex="-1" role="dialog" 
+				aria-labelledby="modalLabelModifActivite" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<h5 class="modal-title" id="modalLabelModifActivite" >Formulaire d'ajout d'un jour</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				  <span aria-hidden="true">&times;</span>
+				</button>
+			  </div>
+			  <form id="formModifActivite" method="POST" name="formModifActivite">
+			  <div class="modal-body">
+				 <input type="text" id="idModifActivite" name="id" size="30" placeholder="Nom de l'activite"
+                       class="form-control"/>
+				 <h5>Nom de l'activite</h5>
+                 <input type="text" id="nomModifActivite" name="nom" size="30" placeholder="Nom de l'activite"
+                       class="form-control"/>
+				 <h5>Adresse</h5>
+				   <input type="text" id="adresseModifActivite" name="adresse" size="30" placeholder="adresse de l'activite"
+                       class="form-control"/>
+				 <h5>Heure de debut</h5>
+				   <input type="text" id="heureDebutModifActivite" name="heureDebut" size="30" placeholder="Heure de debut de l'activite"
+                       class="form-control"/>
+				 <h5>Heure de fin</h5>
+				   <input type="text" id="heureFinModifActivite" name="heureFin" size="30" placeholder="Heure de fin de l'activite"
+                       class="form-control"/>
+				 <h5>Site web</h5>
+				   <input type="text" id="sitewebModifActivite" name="siteweb" size="30" placeholder="Siteweb de l'activite"
+                       class="form-control"/>
+				 <h5>Description</h5>
+				   <textarea  type="text-area" id="descriptionModifActivite" name="description" size="30" placeholder="Description"
+                       class="form-control"></textarea>
+			  </div>
+			  <div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal"
+						>Quitter</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal"
+						onclick="modifActivite();listerDetailsJour('activite',getConditionLister('idJour'));">
+						Sauvegarder les modifcations</button>
+			  </div>
+			  </form>
+			</div>
+		  </div>
+		</div>
+	<!--Fin modale modif activite-->
+	</div>
+	<!--Fin details jour-->
+	
+	</div>
+	<!--Fin de Main-->
+   </div>	
+   </div>
+  </body>

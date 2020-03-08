@@ -1,0 +1,41 @@
+*{
+    box-sizing: border-box;
+}
+html,body{
+    margin: 0px;
+    padding: 0px;
+}
+body{
+    background: #f0f0f0;
+    font: normal normal 14px Open Sans,Verdana, Arial;
+}
+.main-container{
+    max-width: 1024px;
+    margin: 0px auto;
+}
+.section {
+    padding: 15px;
+}
+
+.text-right{
+    text-align: right;
+}
+
+.table{
+    border: 1px solid #dddddd;
+    width: 100%;
+    border-collapse: collapse;
+    margin: 5px 0px;
+    background: #fff;
+}
+
+.table tr th,
+.table tr td{
+    border: 1px solid #dddddd;
+    padding: 10px;
+}
+
+#paypal-buttons{
+    max-width: 300px;
+    margin: 10px 0px 0px auto;
+}

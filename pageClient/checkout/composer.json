@@ -1,0 +1,7 @@
+{
+    "require": {
+        "paypal/rest-api-sdk-php": "*",
+        "paypal/paypal-checkout-sdk": "1.0.1",
+        "braintree/braintree_php" : "4.6.0"
+    }
+}

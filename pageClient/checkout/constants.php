@@ -1,0 +1,4 @@
+<?php
+define("PAYPAL_CLIENT_ID", "AdAlTIvbh0Mv1sYnv43qHgLISxY1AxtqNs6UMXgfWHJTiSOYjUvfYoJFyfcnSdAthb1gBpmNQhf2TG4m");
+define("PAYPAL_CLIENT_SECRET","EHShgq4Xdrhx8eKaxzPSZX7K9JxcInZ7wcan1IdMhafOq9X2MVZwTwLE_9Ed9kKteVCHCpRJqt_MI0U1");
+?>
